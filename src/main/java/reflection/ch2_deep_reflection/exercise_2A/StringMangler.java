@@ -10,7 +10,7 @@ public class StringMangler {
     /**
      * Replace the value array inside the original String with the
      * value array from the newContent String. This code should work
-     * from Java 7 until Java 17.
+     * from Java 7 until Java 21.
      */
     public static void replaceStringContents(String original, String newContent)
             throws ReflectiveOperationException {
