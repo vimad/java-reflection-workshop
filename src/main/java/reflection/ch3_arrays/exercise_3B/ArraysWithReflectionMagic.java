@@ -1,5 +1,7 @@
 package reflection.ch3_arrays.exercise_3B;
 
+import java.lang.reflect.Array;
+
 public class ArraysWithReflectionMagic {
     /**
      * Returns a deep clone of the array source, but
@@ -8,6 +10,14 @@ public class ArraysWithReflectionMagic {
      * is not an array, simply return it.
      */
     public static <A> A deepClone(A source) {
-        return source;
+        if (source == null || !source.getClass().isArray()) return source;
+        int length = Array.getLength(source);
+        @SuppressWarnings("unchecked")
+        A clone = (A) Array.newInstance(
+                source.getClass().getComponentType(), length);
+        for (int i = 0; i < length; i++) {
+            Array.set(clone, i, deepClone(Array.get(source, i)));
+        }
+        return clone;
     }
 }
