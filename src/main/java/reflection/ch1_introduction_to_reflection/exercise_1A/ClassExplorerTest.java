@@ -63,6 +63,7 @@ public class ClassExplorerTest {
     public void testLinkedList() {
         var interfaces = ClassExplorer.findAllInterfaces(LinkedList.class);
         assertClassesEquals(Set.of(Iterable.class, Collection.class, Serializable.class,
-                Deque.class, Queue.class, Cloneable.class, List.class), interfaces);
+                Deque.class, Queue.class, Cloneable.class, List.class,
+                SequencedCollection.class), interfaces);
     }
 }
