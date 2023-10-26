@@ -22,23 +22,28 @@ public class MagicClassInstantiator {
         String methodName = args[args.length - 1];
 
         // 1. Use the "className" to load the class with Class.forName()
-        Class<?> clazz = null; // TODO
+        Class<?> clazz = Class.forName(className, false,
+                Thread.currentThread().getContextClassLoader());
 
         // 2. Use the "parameterTypes" to find the Constructor for the class
-        Constructor<?> constructor = null; // TODO
+        Constructor<?> constructor = clazz.getConstructor(parameterTypes);
 
         // 3. Construct the object by calling the newInstance() method on the
         // Constructor that you have just created, using the "parameters"
-        Object object = null; // TODO
+        Object object = constructor.newInstance(parameters);
 
         // 4. Find the method on the class given by "methodName".  You can
         // assume that the method does not have any parameters.
-        Method method = null; // TODO
+        Method method = clazz.getMethod(methodName);
 
         // 5. Call the method with "invoke()", passing in the object you created
         // as the first parameter.
+        Object result = method.invoke(object);
 
         // 6. If the return type of the method is not void, print the result to
         // the console with System.out.println()
+        if (method.getReturnType() != void.class) {
+            System.out.println("result = " + result);
+        }
     }
 }
