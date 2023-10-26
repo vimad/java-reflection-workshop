@@ -1,17 +1,18 @@
 package reflection.ch4_java_lang_invoke.exercise_4B;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 
 /**
  * Refactor this to use a VarHandle instead.
  */
 public class BankAccount {
     // INVARIANT: balance must never be negative!!!
-    private final AtomicLong balance;
+    private volatile double balance;
 
     public BankAccount(double balance) {
         if (balance < 0) throw new IllegalArgumentException("balance < 0");
-        this.balance = new AtomicLong(Double.doubleToLongBits(balance));
+        this.balance = balance;
     }
 
     public boolean deposit(double amount) {
@@ -30,14 +31,12 @@ public class BankAccount {
             current = getBalance();
             next = current + amount;
             if (next < 0) return false;
-        } while (!balance.compareAndSet(
-                Double.doubleToLongBits(current),
-                Double.doubleToLongBits(next)));
+        } while (!BALANCE.compareAndSet(this, current, next));
         return true;
     }
 
     public double getBalance() {
-        return Double.longBitsToDouble(balance.get());
+        return balance;
     }
 
     public boolean transferTo(BankAccount other, double amount) {
@@ -45,5 +44,15 @@ public class BankAccount {
         if (!changeBalanceBy(-amount)) return false;
         other.deposit(amount);
         return true;
+    }
+
+    private static final VarHandle BALANCE;
+    static {
+        try {
+            BALANCE = MethodHandles.lookup().findVarHandle(
+                    BankAccount.class, "balance", double.class);
+        } catch (ReflectiveOperationException e) {
+            throw new Error(e);
+        }
     }
 }
