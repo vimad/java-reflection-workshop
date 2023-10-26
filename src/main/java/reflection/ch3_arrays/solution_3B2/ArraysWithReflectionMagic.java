@@ -23,16 +23,15 @@ public class ArraysWithReflectionMagic {
 
     private static Object deepClone0(Object source) {
         assert source != null;
-        if (source instanceof Object[]) return ((Object[]) source).clone();
-        else if (source instanceof byte[]) return ((byte[]) source).clone();
-        else if (source instanceof short[]) return ((short[]) source).clone();
-        else if (source instanceof int[]) return ((int[]) source).clone();
-        else if (source instanceof long[]) return ((long[]) source).clone();
-        else if (source instanceof char[]) return ((char[]) source).clone();
-        else if (source instanceof float[]) return ((float[]) source).clone();
-        else if (source instanceof double[]) return ((double[]) source).clone();
-        else if (source instanceof boolean[])
-            return ((boolean[]) source).clone();
+        if (source instanceof Object[] src) return src.clone();
+        else if (source instanceof byte[] src) return src.clone();
+        else if (source instanceof short[] src) return src.clone();
+        else if (source instanceof int[] src) return src.clone();
+        else if (source instanceof long[] src) return src.clone();
+        else if (source instanceof char[] src) return src.clone();
+        else if (source instanceof float[] src) return src.clone();
+        else if (source instanceof double[] src) return src.clone();
+        else if (source instanceof boolean[] src)return src.clone();
         else throw new AssertionError("Not an array");
     }
 }
