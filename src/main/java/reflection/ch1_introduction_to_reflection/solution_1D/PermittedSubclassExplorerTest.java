@@ -15,14 +15,14 @@ import static reflection.util.TestHelpers.assertStringsClassesEquals;
 public class PermittedSubclassExplorerTest {
     @Test
     public void testExecutable() {
-        // works for Java 17 until 19
+        // works for Java 17 until 21
         assertClassesEquals(Set.of(Method.class, Constructor.class),
                 PermittedSubclassExplorer.find(Executable.class));
     }
 
     @Test
     public void testConstantDesc() {
-        // works for Java 17 until 19
+        // works for Java 17 until 21
         assertStringsClassesEquals(Set.of("ClassDesc", "PrimitiveClassDescImpl", "ReferenceClassDescImpl",
                         "MethodHandleDesc", "AsTypeMethodHandleDesc", "DirectMethodHandleDesc", "DirectMethodHandleDescImpl",
                         "MethodTypeDesc", "MethodTypeDescImpl", "DynamicConstantDesc",
