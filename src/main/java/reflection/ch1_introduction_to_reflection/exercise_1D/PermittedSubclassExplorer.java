@@ -1,5 +1,7 @@
 package reflection.ch1_introduction_to_reflection.exercise_1D;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public class PermittedSubclassExplorer {
@@ -12,6 +14,12 @@ public class PermittedSubclassExplorer {
      * @throws IllegalArgumentException if root isn't sealed
      */
     public static Set<Class<?>> find(Class<?> root) {
-        throw new UnsupportedOperationException("TODO");
+        if (!root.isSealed()) throw new IllegalArgumentException(root + " must be sealed");
+        var permitted = new HashSet<Class<?>>();
+        Collections.addAll(permitted, root.getPermittedSubclasses());
+        for (var subclass : root.getPermittedSubclasses()) {
+            if (subclass.isSealed()) permitted.addAll(find(subclass));
+        }
+        return Set.copyOf(permitted);
     }
 }
