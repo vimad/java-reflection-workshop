@@ -1,5 +1,9 @@
 package reflection.ch1_introduction_to_reflection.exercise_1B;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ListMangler {
@@ -24,7 +28,24 @@ public class ListMangler {
         // Find the methodName in the Collections class, with List as a parameter
         // Invoke the static method, passing in the copy of the list as a parameter
         // Return an immutable list with List.copyOf() of our copy
-        return list;
+        try {
+            List<String> copy = new ArrayList<>(list);
+            Method method = Collections.class.getMethod(methodName, List.class);
+            method.invoke(null, copy);
+            return List.copyOf(copy);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException("Method " + methodName + " not found");
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            try {
+                throw e.getCause();
+            } catch (RuntimeException | Error unchecked) {
+                throw unchecked;
+            } catch (Throwable checked) {
+                throw new IllegalStateException(checked);
+            }
+        }
         // If method is not found, throw an IllegalArgumentException
         // If an IllegalAccessException is thrown, throw an AssertionError
         // If an InvocationTargetException is thrown, if the cause is unchecked throw it,
