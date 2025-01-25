@@ -1,12 +1,17 @@
-package reflection.util;
+package reflection;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class MyTest {
+public class MethodExample {
+
+    public void person(String name, int age) {}
+
     public static void main(String[] args) throws ReflectiveOperationException {
         Class<String> stringClass = String.class;
         Method toUpperCase = stringClass.getMethod("toUpperCase");
@@ -15,6 +20,8 @@ public class MyTest {
         //Use java.lang.reflect.Modifier to check access modifiers
         boolean aPublic = Modifier.isPublic(toUpperCase.getModifiers());
         System.out.println(aPublic); // output: true
+
+        // Object[] a = new Object[]{null};
 
         //If a static method we pass null as first parameter to invoke
         //If there are arguments to the method we need to pass the type of arguments
@@ -31,5 +38,11 @@ public class MyTest {
                 System.out.println(method.getName()); // print values - reverse,sort,shuffle,unmodifiableList,synchroizedList
             }
         }
+
+        Method person = MethodExample.class.getDeclaredMethod("person", String.class, int.class);
+        Arrays.stream(person.getParameters())
+            .map(Parameter::getName)
+            .forEach(System.out::println);
+
     }
 }
